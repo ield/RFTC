@@ -150,24 +150,28 @@ f = 10e6*[fmin:fmax];     % Frequency axis [Hz] (from 0 to 10 GHz with jump of 1
 cond = 5.8e7;
 e0 = 8.854e-12;           % Constant. See pozar appendix
 
-% epr = e0*er;              % Pozar pag10
-epr = e;
-tand = cond./(2*pi*f*epr);% Pozar pag10
-
-k = 2*pi*f/c;
-[~, beta1, fc, ~] = dispersion(1, 0, a, b, c, fmin, fmax);
-alphad = k.^2.*tand./beta1;     % Pozar pag 117
-
-% Obtain alphac
+% % epr = e0*er;              % Pozar pag10
+% epr = er;
+% tand = cond./(2*pi*f*epr);% Pozar pag10
+% 
+% k = 2*pi*f/c;
+% [~, beta1, fc, ~] = dispersion(1, 0, a, b, c, fmin, fmax);
+% alphad = k.^2.*tand./beta1;     % Pozar pag 117
+% 
+% % Obtain alphac
 mu0 = 4*pi*1e-7;
 Rs = sqrt((2*pi*f*mu0)/(2*cond));% Pozar pag28. Rs = 1/(sigmadelta)
 
-alphac = 1./eta.*Rs.*((fc./f).^2+a/(2*b))./((a/2).*sqrt(1-(fc./f).^2))
+alphac = 1./eta.*Rs.*((fc./f).^2+a/(2*b))./((a/2).*sqrt(1-(fc./f).^2)); %Microwave T3 slides.
 
 
-alphaTot = alphac + alphad;
+alphaTot = alphac *8.685889638; % Change to dB
+
+figure('Color',[1 1 1]);
 
 plot(f/1e9, alphaTot, 'k', 'LineWidth', 1);
-
-
+xlim([f(1)/1e9 f(end)/1e9]);
+xlabel('Frequency [GHz]');
+ylabel('Attenuation constant [dB/m]');
+saveas(gcf, '../Task2/Images/Ex1f', 'svg');
 
