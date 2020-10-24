@@ -33,7 +33,8 @@ plot(beta2, f/1e9);
 plot(alpha2, f/1e9);
 
 legend('\beta TE_1_0', '\alpha TE_1_0', '\beta TE_0_1', '\alpha TE_0_1');
-saveas(gcf, '../Task2/Images/Ex1a', 'svg');
+% saveas(gcf, '../Task2/Images/Ex1a.eps');
+print -depsc ../Task2/Images/Ex1a
 hold off;
 
 %% Ex1.b
@@ -70,8 +71,8 @@ plot(0, 0.95*fc2/1e9, 'o', 'LineWidth', 2)
 legend('\beta TE_1_0', '\alpha TE_1_0', '\beta TE_0_1', '\alpha TE_0_1',...
     'f_cTE_1_0', 'f_cTE_0_1', 'k_{cut}TE_1_0', 'k_{cut}TE_0_1',...
     'Single-Mode Bandwidth', 'Recommended Bandwidth', 'f_{min}', 'f_{max}');
-saveas(gcf, '../Task2/Images/Ex1b', 'svg');
-
+% saveas(gcf, '../Task2/Images/Ex1b.eps');
+print -depsc ../Task2/Images/Ex1b
 %% Ex1.c
 fmax = 0.95*fc2;
 k_fmax = 2*pi*fmax/c;
@@ -97,6 +98,7 @@ eta = 120*pi;
 fmin = 0;
 fmax = 2000;
 f = 10e6*[fmin:fmax];     % Frequency axis [Hz] (from 0 to 10 GHz with jump of 10 MHz)
+mu0 = 4*pi*1e-7;
 
 % Plots
 figure('Color',[1 1 1]);
@@ -106,25 +108,28 @@ ylabel('Transmitted Power [MW]');
 
 hold on;
 
-% Obtaining parameters for equation:
-% gamma
-[alpha1, beta1, fc1, kcut1] = dispersion(1, 0, a, b, c, fmin, fmax);
-m = 1;
-n = 0;
-gamma = real(alpha1) + 1i*real(beta1);
-
-% kc
-kc = sqrt((m*pi/a)^2+(n*pi/b)^2);
-
-% ZTe
-Zte = obtainZte(kc, f);
-
-% Obtain integral
-Emax = 3e6;
-integral = intHHcong10(a, b, Emax);
-
-%Solve equiation
-W = (gamma .* conj(gamma))/(2*kc^2).*real(Zte)*integral;
+% % Obtaining parameters for equation:
+% % gamma
+% [alpha1, beta1, fc1, kcut1] = dispersion(1, 0, a, b, c, fmin, fmax);
+% m = 1;
+% n = 0;
+% gamma = real(alpha1) + 1i*real(beta1);
+% 
+% % kc
+% kc = sqrt((m*pi/a)^2+(n*pi/b)^2);
+% 
+% % ZTe
+% % Zte = obtainZte(kc, f, alpha1, beta1);
+% Zte = 1i*2*pi*f*mu0./gamma;
+% 
+% % Obtain integral
+% Emax = 3e6;
+% integral = intHHcong10(a, b, Emax);
+% 
+% %Solve equiation
+% W = (gamma .* conj(gamma))/(2*kc^2).*real(Zte)*integral;
+Emax = 3e6
+W = a*b/(4*eta)*Emax^2.*sqrt(1-(fc1./f).^2);
 
 plot(f/1e9, W/1e6, 'k', 'LineWidth', 1);
 
@@ -133,8 +138,8 @@ plot(f/1e9, W/1e6, 'k', 'LineWidth', 1);
 fmax_u = 0.95*fc2;
 index = find(f' > fmax_u);
 plot(f(index(1))/1e9, W(index(1))/1e6, 'o', 'LineWidth', 2);
-legend('Transmitted power TE_1_0', 'Transmitted power in f_{max}');
-saveas(gcf, '../Task2/Images/Ex1e', 'svg');
+legend('Transmitted power TE_1_0', 'Transmitted power in f_{max}', 'Location', 'east');
+saveas(gcf, '../Task2/Images/Ex1e.eps');
 
 %% Ex 1.f
 a = 19.05e-3;        % a [m]
@@ -143,7 +148,7 @@ er = 1;              % Dielectric constant
 c = 3e8;            % Speed of light [m/s]
 eta = 120*pi;
 fmin = 0;
-fmax = 2000;
+fmax = 4000;
 f = 10e6*[fmin:fmax];     % Frequency axis [Hz] (from 0 to 10 GHz with jump of 10 MHz)
 
 % Obtain alphad
@@ -162,7 +167,7 @@ e0 = 8.854e-12;           % Constant. See pozar appendix
 mu0 = 4*pi*1e-7;
 Rs = sqrt((2*pi*f*mu0)/(2*cond));% Pozar pag28. Rs = 1/(sigmadelta)
 
-alphac = 1./eta.*Rs.*((fc./f).^2+a/(2*b))./((a/2).*sqrt(1-(fc./f).^2)); %Microwave T3 slides.
+alphac = Rs./eta.*((fc1./f).^2+a/(2*b))./((a/2).*sqrt(1-(fc1./f).^2)); %Microwave T3 slides.
 
 
 alphaTot = alphac *8.685889638; % Change to dB
@@ -173,5 +178,5 @@ plot(f/1e9, alphaTot, 'k', 'LineWidth', 1);
 xlim([f(1)/1e9 f(end)/1e9]);
 xlabel('Frequency [GHz]');
 ylabel('Attenuation constant [dB/m]');
-saveas(gcf, '../Task2/Images/Ex1f', 'svg');
+saveas(gcf, '../Task2/Images/Ex1f.eps');
 

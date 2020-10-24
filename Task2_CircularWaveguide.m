@@ -26,9 +26,11 @@ xlim([f(1)/1e9 f(end)/1e9]);
 xlabel('Frequency [GHz]');
 ylabel('Transmitted Power [MW]');
 
-saveas(gcf, '../Task2/Images/Ex2a', 'svg');
+saveas(gcf, '../Task2/Images/Ex2a.eps');
 
 %% Calculate attenuation constant
+fmax = 2000;
+f = 10e6*[fmin:fmax];
 
 % Obtain alphad
 cond = 6.17e7;
@@ -37,7 +39,7 @@ mu0 = 4*pi*1e-7;
 
 
 Rs = sqrt((2*pi*f*mu0)/(2*cond));% Pozar pag28. Rs = 1/(sigmadelta)
-alphac = 1./eta.*Rs.*((fc./f).^2+1/(p11^2-1))./(a.*sqrt(1-(fc./f).^2)); %Microwave T3 slides.
+alphac = Rs./eta.*((fc./f).^2+1/(p11^2-1))./(a*sqrt(1-(fc./f).^2)); %Microwave T3 slides.
 
 
 alphaTot = alphac *8.685889638; % Change to dB
@@ -48,4 +50,4 @@ plot(f/1e9, alphaTot, 'k', 'LineWidth', 1);
 xlim([f(1)/1e9 f(end)/1e9]);
 xlabel('Frequency [GHz]');
 ylabel('Attenuation constant [dB/m]');
-saveas(gcf, '../Task2/Images/Ex2b', 'svg');
+saveas(gcf, '../Task2/Images/Ex2b.eps');
