@@ -244,8 +244,8 @@ Q = [50 100 200 500 1000 2000]; %Several Q are going to be tested and compared
 G = w0*C./Q;
 % All sparameters obtained in the comparison of Q are stored in s11 and s21
 % to be compared with the original lumped elements (Q = infinity)
-s11Par = [abs(s11Lump)];
-s21Par = [abs(s21Lump)];
+s11Par = [s11Lump];
+s21Par = [s21Lump];
 
 % Step 2: Update inverters and parameters
 params = zeros(1, N+N+1);   %j1 Y1 j2 Y2 j3 Y3 j4
@@ -268,12 +268,11 @@ for kk = 1:length(Q)    %Several Q are going to be tested and compared
     % Multiply the F parameters of the cascade elements and transform them to s
     % parameters
     [s11, s21] = multFretS(length(params), length(w), F);
-    s11Par = [s11Par; abs(s11)];
-    s21Par = [s21Par; abs(s21)];
+    s11Par = [s11Par; s11];
+    s21Par = [s21Par; s21];
 end
 % Step 5: Plot
-plotQ(w/(2*pi*1e9), s11Par, Q, path, 'BPF_Lumped_Q_s11', 'Frequency [GHz]', 's_1_1 [dB]');
-plotQ(w/(2*pi*1e9), s21Par, Q, path, 'BPF_Lumped_Q_s21', 'Frequency [GHz]', 's_2_1 [dB]');
+plotQ(w/(2*pi*1e9), s11Par, s21Par, Q, path, 'BPF_Lumped_Q_s11');
 
 %% Quality Factor: Distributed elements
 
@@ -284,8 +283,8 @@ Q = [50 100 200 500 1000 2000]; %Several Q are going to be tested and compared
 alpha = pi*lambdag./(Q*lambda^2);
 % All sparameters obtained in the comparison of Q are stored in s11 and s21
 % to be compared with the original lumped elements (Q = infinity)
-s11Par = [abs(s11Dis)];
-s21Par = [abs(s21Dis)];
+s11Par = [s11Dis];
+s21Par = [s21Dis];
 
 % Step 2: Update inverters and parameters
 params = zeros(1, N+N+1);   %j1 Y1 j2 Y2 j3 Y3 j4
@@ -315,9 +314,9 @@ for kk = 1:length(Q)    %Several Q are going to be tested and compared
     % Multiply the F parameters of the cascade elements and transform them to s
     % parameters
     [s11, s21] = multFretS(length(params), length(w), F);
-    s11Par = [s11Par; abs(s11)];
-    s21Par = [s21Par; abs(s21)];
+    s11Par = [s11Par; s11];
+    s21Par = [s21Par; s21];
 end
 % Step 5: Plot
-plotQ(w/(2*pi*1e9), s11Par, Q, path, 'BPF_Dist_Q_s11', 'Frequency [GHz]', 's_1_1 [dB]');
-plotQ(w/(2*pi*1e9), s21Par, Q, path, 'BPF_Dist_Q_s21', 'Frequency [GHz]', 's_2_1 [dB]');
+plotQ(w/(2*pi*1e9), s11Par, s21Par, Q, path, 'BPF_Dist_Q_s11');
+
