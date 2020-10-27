@@ -52,27 +52,27 @@ subplot(1, 3, 3);
 Legend = cell(length(Q)+1, 1);
 
 data = s21(1, :)
-phase = angle(data);
-gDelay = -diff(phase)./diff(w);
+phase = unwrap(angle(data));
+gDelay = -diff(phase)./(diff(w)*2*pi);
 plot(w(2:end), gDelay);
 
 Legend{1}=strcat('Q = \infty');
 hold on;
 
 for ii = 2:length(Q)+1
-    phase = angle(s21(ii, :));
-    gDelay = -diff(phase)./diff(w);
+    phase = unwrap(angle(s21(ii, :)));
+    gDelay = -diff(phase)./(diff(w)*2*pi);
 
     plot(w(2:end), gDelay, '--');
     Legend{ii}=strcat('Q = ', num2str(Q(ii-1)));
     hold on;
 end
 
-legend(Legend, 'location', 'southeast');
+legend(Legend, 'location', 'northeast');
 
 xlabel('Frequency [GHz]');
-ylabel('Group Delay(s)');
-ylim([0 20]);
+ylabel('Group Delay(ns)');
+ylim([0 4]);
 
 %%
 saveas(gca, [path, file],'epsc');

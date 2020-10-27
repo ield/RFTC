@@ -27,19 +27,19 @@ legend('|s_1_1| Lumped', '|s_2_1| Lumped', '|s_1_1| Distributed', '|s_2_1| Distr
 %%
 subplot(1, 2, 2);
 
-phase = angle(s21Lum);
-gDelay = -diff(phase)./diff(w);
+phase = unwrap(angle(s21Lum));
+gDelay = -diff(phase)./(diff(w)*2*pi);
 plot(w(2:end), gDelay, '--');
 hold on;
-phase = angle(s21Dis);
-gDelay = -diff(phase)./diff(w);
+phase = unwrap(angle(s21Dis));
+gDelay = -diff(phase)./(diff(w)*2*pi);
 plot(w(2:end), gDelay);
 hold on;
 
  
 xlabel(xla);
-ylabel('dB');
-ylim([0 20]);
+ylabel('Group delay (ns)');
+ylim([0 4]);
 legend('Lumped', 'Distributed', 'location', 'northeast');
 
 

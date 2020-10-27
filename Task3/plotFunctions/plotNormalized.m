@@ -1,4 +1,4 @@
-function [] = plotNormalized(w, s11, s21, path, file, xla)
+function [] = plotNormalized(w, s11, s21, path, file, xla, yla)
 % Plots a normalized pass function
 figure('Color',[1 1 1]);
 % Set position of the plot
@@ -8,6 +8,8 @@ width=900;
 height=300;
 set(gcf,'position',[x0,y0,width,height])
 
+% Adjust w to Hz
+w = w/(2*pi);
 %%
 subplot(1, 2, 1);
 
@@ -23,14 +25,14 @@ legend('|s_1_1|', '|s_2_1|', 'location', 'southeast');
 subplot(1, 2, 2);
 % Plots group delay
 
-phase = angle(s21);
-gDelay = -diff(phase)./diff(w);
+phase = unwrap(angle(s21));
+gDelay = -diff(phase)./(diff(w)*2*pi);
 plot(w(2:end), gDelay);
 hold on;
 
 xlabel(xla);
-ylabel('Group delay (s)');
-ylim([0 20]);
+ylabel(yla);
+ylim([0 3]);
 
 %%
 saveas(gca, [path, file],'epsc');
