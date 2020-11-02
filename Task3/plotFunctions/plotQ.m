@@ -12,13 +12,13 @@ subplot(1, 3, 1)
 Legend = cell(length(Q)+1, 1);
 
 data = abs(s11(1, :));
-plot(w, 10*log10(data));
+plot(w, 20*log10(data));
 Legend{1}=strcat('Q = \infty');
 hold on;
 
 for ii = 2:length(Q)+1
     data = abs(s11(ii, :));
-    plot(w, 10*log10(data), '--');
+    plot(w, 20*log10(data), '--');
     Legend{ii}=strcat('Q = ', num2str(Q(ii-1)));
     hold on;
 end
@@ -32,13 +32,13 @@ subplot(1, 3, 2)
 Legend = cell(length(Q)+1, 1);
 
 data = abs(s21(1, :));
-plot(w, 10*log10(data));
+plot(w, 20*log10(data));
 Legend{1}=strcat('Q = \infty');
 hold on;
 
 for ii = 2:length(Q)+1
     data = abs(s21(ii, :));
-    plot(w, 10*log10(data), '--');
+    plot(w, 20*log10(data), '--');
     Legend{ii}=strcat('Q = ', num2str(Q(ii-1)));
     hold on;
 end

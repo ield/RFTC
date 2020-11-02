@@ -13,9 +13,9 @@ w = w/(2*pi);
 %%
 subplot(1, 2, 1);
 
-plot(w, 10*log10(abs(s11)));
+plot(w, 20*log10(abs(s11)));
 hold on;
-plot(w, 10*log10(abs(s21)));
+plot(w, 20*log10(abs(s21)));
  
 xlabel(xla);
 ylabel('dB');

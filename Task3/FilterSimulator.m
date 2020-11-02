@@ -19,7 +19,7 @@ file = fopen(resFile, 'w');
 % Step 1: Calculate A max
 RL = 20;                        % Return loss = 10log(Pret/Pin).
 % Since Pin = Pret + Ptrans, and Att = 10log(Pin/Ptrans)
-Amax = 10*log10(1/(1-10^(-RL/10)));
+Amax = 10*log10(1/(1-10^(-RL/10)))
 %% Low pass prototype
 % Step 1: Calculate gk (Diapo 22)
 beta = log(coth(Amax/17.37));
@@ -276,4 +276,13 @@ for kk = 1:length(Q)    %Several Q are going to be tested and compared
 end
 % Step 5
 plotQ(w/(2*pi*1e9), s11Par, s21Par, Q, path, 'BPF_Dist_Q_s11');
+
+%% Coupled line transformation
+% Transformation based on Pozar Pag 431
+% Step 1. Calculate Z0e and Z0o
+Z0e = Z0*(1+J5_nor*Z0+(J5_nor*Z0).^2);
+Z0o = Z0*(1-J5_nor*Z0+(J5_nor*Z0).^2);
+length = l/2;
+
+printCoupled('Coupled lines ADS', Z0e, Z0o, length, Z0, file);
 fclose(file);

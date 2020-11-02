@@ -10,13 +10,13 @@ set(gcf,'position',[x0,y0,width,height])
 
 %%
 subplot(1, 2, 1);
-plot(w, 10*log10(abs(s11Lum)), '--');
+plot(w, 20*log10(abs(s11Lum)), '--');
 hold on;
-plot(w, 10*log10(abs(s21Lum)), '--');
+plot(w, 20*log10(abs(s21Lum)), '--');
 hold on;
-plot(w, 10*log10(abs(s11Dis)));
+plot(w, 20*log10(abs(s11Dis)));
 hold on;
-plot(w, 10*log10(abs(s21Dis)));
+plot(w, 20*log10(abs(s21Dis)));
 hold on;
 
  
