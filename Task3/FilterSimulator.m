@@ -188,7 +188,6 @@ printInvertersLC('BPF Normalized Resonators ADS', N, F, Lnor, Cnor, Zin, file);
 % surf apuntes/t2 pag 33
 % The change is done changing the resonators by lambda/2 waveguides of
 % impezance Z0
-SP = sqrt(C/L);
 SPdis = pi/2/Z0;
 
 c = 3e8;
