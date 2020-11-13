@@ -23,19 +23,36 @@ plotAdmittance(allData(1).f, Y, 'Y(f)', path, 'y(f)')
 
 %% Step 3. Compare to a parallel capacitor in 0-7 GHz
 f7g = allData(1).f(1:find(allData(1).f >= 7, 1))*1e9;   % Frequencies from 0-7GHz
-Y7g = Y(1:find(allData(1).f >= 7, 1));              % Y values from 0-7GHz scaled to use fminunc
+Y7g = Y(1:find(allData(1).f >= 7, 1))*1e20;              % Y values from 0-7GHz scaled to use fminunc
 
 %It optimzes the value of C so that it adjusts the desired function
-options=optimoptions('lsqnonlin');
-options.Display='iter';
+options = optimoptions('fminunc','OptimalityTolerance', 1e-20);    % Declare the optimization options. The tolerance is increased to search better values.  
+options.Display='iter';             % Declare the optimization options
 
 Cini = 1;                          % Initial value of C
 clc
-[Copt] = lsqnonlin(@(C) minDisC(C, f7g, imag(Y7g)), Cini, [], [], options);
-Copt = Copt*1e-12;
+[Copt] = fminunc(@(C) minDisC(C, f7g, imag(Y7g)), Cini, options);
+Copt = Copt/1e20;
 
 Y_copt = 1i*2*pi*allData(1).f*1e9*Copt;
 plotAdmittanceAndC(allData(1).f, Y, Y_copt, '', path, 'y_c(f)');
+
+
+%% Step 3. Compare to a parallel capacitor + inductance
+f = allData(1).f*1e9;   % All frequencies
+Y_des = Y;              % Y values scaled to use fminunc
+
+%It optimzes the value of C and L so that it adjusts the desired function
+options = optimoptions('fminunc','OptimalityTolerance', 1e-40, 'StepTolerance', 1e-40, 'OptimalityTolerance', 1e-40, 'FunctionTolerance', 1e-40);    % Declare the optimization options. The tolerance is increased to search better values.  
+options.Display='iter';             % Declare the optimization options
+
+LCini = [1 1];
+clc
+LCopt = fminunc(@(LC) minDisLC(LC, f, imag(Y_des)), LCini, options);
+L = LCopt(1);
+C = LCopt(2);
+Y_copt = 1i*2*pi*f*C./(1-(2*pi*f).^2*L*C);
+plotAdmittanceAndC(allData(1).f, Y, Y_copt, '', path, 'y_lc(f)');
 
 %% Step 3. Compare to a parallel capacitor + inductance
 f = allData(1).f*1e9;   % All frequencies
@@ -47,8 +64,8 @@ options.Display='iter';
 LCini = [1 1];
 clc
 LCopt = lsqnonlin(@(LC) minDisLC(LC, f, imag(Y_des)), LCini, [], [], options);
-L = LCopt(1)*1e-9;
-C = LCopt(2)*1e-12;
+L = LCopt(1);
+C = LCopt(2);
 Y_copt = 1i*2*pi*f*C./(1-(2*pi*f).^2*L*C);
 plotAdmittanceAndC(allData(1).f, Y, Y_copt, '', path, 'y_lc(f)');
 
