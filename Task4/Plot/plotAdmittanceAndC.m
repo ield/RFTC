@@ -6,7 +6,7 @@ plot(f, imag(y), 'LineWidth', 1); hold on;
 plot(f, real(yc), 'LineWidth', 1); hold on;
 plot(f, imag(yc), 'LineWidth', 1); hold on;
 
-legend('Re(Y(f))', 'Im(Y(f))', 'Re(Y_c(f))', 'Im(Y_c(f))', 'Location', 'northwest');
+legend('Re(Y(f))', 'Im(Y(f))', 'Re(Y_{lc}(f))', 'Im(Y_{lc}(f))', 'Location', 'northwest');
 xlabel('f (GHz)');
 ylabel(ylab);
 saveas(gca, [path, fileName],'epsc');

@@ -1,0 +1,20 @@
+
+
+Low Pass prototype Normalized
+
+Lumped elements
+C1 = 1.670300e+00 F
+L1 = 1.192600e+00 H
+C2 = 2.366100e+00 F
+L2 = 8.419000e-01 H
+Rend = 5.040069e-01 Ohm
+
+
+Low Pass prototype Normalized
+
+Lumped elements
+C1 = 7.088973e-13 F
+L1 = 1.265388e-09 H
+C2 = 1.004204e-12 F
+L2 = 8.932836e-10 H
+Rend = 2.520034e+01 Ohm
