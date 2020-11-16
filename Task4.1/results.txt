@@ -1,20 +1,24 @@
 
 
-Low Pass prototype Normalized
+Normalized elements
 
-Lumped elements
-C1 = 1.670300e+00 F
-L1 = 1.192600e+00 H
-C2 = 2.366100e+00 F
-L2 = 8.419000e-01 H
-Rend = 5.040069e-01 Ohm
+g_1 = 1.670300 F
+g_2 = 1.192600 F
+g_3 = 2.366100 F
+g_4 = 0.841900 F
 
 
-Low Pass prototype Normalized
+Capacitors
 
-Lumped elements
-C1 = 7.088973e-13 F
-L1 = 1.265388e-09 H
-C2 = 1.004204e-12 F
-L2 = 8.932836e-10 H
-Rend = 2.520034e+01 Ohm
+C_1 = 0.708897 pF
+C_2 = 0.506155 pF
+C_3 = 1.004204 pF
+C_4 = 0.357313 pF
+
+
+Patch Lengths
+
+L_1 = 12.814222 mm
+L_2 = 12.037982 mm
+L_3 = 13.638737 mm
+L_4 = 11.209357 mm

@@ -1,19 +1,15 @@
-function [] = printgk(g, file, text)
+function [] = printgk(g, file, text, elements, units)
 % Prints the gk elements of the low pass filter in file f
 fprintf(file, '\n');
 fprintf(file, '\n');
 fprintf(file, text);
 fprintf(file, '\n');
 fprintf(file, '\n');
-fprintf(file, 'Lumped elements\n');
-C = g(1:2:end-1);   % Capacitors of the lumped elements
-L = g(2:2:end-1);   % Inductances of the lumped elements.
 % The last element is the matching resistance.
 
-for ii = 1:length(C)
-    fprintf(file, 'C%i = %d F\n', ii, C(ii));   
-    fprintf(file, 'L%i = %d H\n', ii, L(ii));
+for ii = 1:length(g)
+    fprintf(file, '%s_%i = %f %s\n', elements, ii, g(ii), units);
 end
-fprintf(file, 'Rend = %d Ohm\n', 1/g(end));
+
 end
 

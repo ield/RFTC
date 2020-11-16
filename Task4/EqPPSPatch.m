@@ -1,7 +1,7 @@
 %% Engineer: ield
 
 clear;
-path = '../../Task4/Images/';    % Path to save images
+path = '../../Task4/Report4_01/Images/';    % Path to save images
 %% Step 1. Load in allData all the measures taken.
 % all data is an array of structures that each element
 %   l: length of the patch
@@ -72,6 +72,7 @@ for ii = 1:length(allData)-1
 end
 
 plotcvsl(lengths, Copts*1e12, 'Optimum C (pF)', path, 'cvsl');
+save('../Task4.1/cvsl.mat', 'lengths', 'Copts');
 
 
 
