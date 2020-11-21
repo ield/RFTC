@@ -2,23 +2,39 @@
 
 Normalized elements
 
-g_1 = 1.670300 F
-g_2 = 1.192600 F
-g_3 = 2.366100 F
-g_4 = 0.841900 F
+g_1 = 1.289760 F
+g_2 = 1.300490 F
+g_3 = 1.796920 F
+g_4 = 0.910168 F
 
 
 Capacitors
 
-C_1 = 0.708897 pF
-C_2 = 0.506155 pF
-C_3 = 1.004204 pF
-C_4 = 0.357313 pF
+C_1 = 0.072600 pF
+C_2 = 0.073204 pF
+C_3 = 0.101148 pF
+C_4 = 0.051233 pF
 
 
-Patch Lengths
+Patch Lengths without considering the dielectric
 
-L_1 = 12.814222 mm
-L_2 = 12.037982 mm
-L_3 = 13.638737 mm
-L_4 = 11.209357 mm
+L_1 = 12.211594 mm
+L_2 = 12.230794 mm
+L_3 = 12.981201 mm
+L_4 = 11.433677 mm
+
+
+Patch Lengths considering the dielectric
+
+L_1 = 6.264416 mm
+L_2 = 6.274265 mm
+L_3 = 6.659216 mm
+L_4 = 5.865353 mm
+
+
+Patch Lengths as a ratio
+
+L_1 = 0.940714 mm
+L_2 = 0.942193 mm
+L_3 = 1.000000 mm
+L_4 = 	 mm

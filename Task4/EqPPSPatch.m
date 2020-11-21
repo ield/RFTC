@@ -9,7 +9,7 @@ path = '../../Task4/Report4_01/Images/';    % Path to save images
 %   s11: s11 measures (real and imag)
 %   s31: s31 measures (real and imag)
 allData = textToSignal('s11_all.txt', 's31_all.txt');
-Z0 = 50;
+Z0 = 120*pi;
 
 %% Step 2. Transform the s parameters to an admittance
 % The F par of an admittance are found in pozar pag 190

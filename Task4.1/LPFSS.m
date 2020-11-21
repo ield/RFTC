@@ -14,7 +14,8 @@ file = fopen(resFile, 'w');
 % pag 407 because the order must be odd
 
 N = 4;
-g_lpnor = [1.6703 1.1926 2.3661 0.8419];
+% g_lpnor = [1.6703 1.1926 2.3661 0.8419];
+g_lpnor = [1.28976 1.30049 1.79692 0.910168];        % After optimization
 
 % 
 % N = 5;
@@ -24,10 +25,12 @@ printgk(g_lpnor, file, 'Normalized elements', 'g', 'F');
 
 % All the elements are denormalized
 w0 = 2*pi*7.5e9;
-Z0 = 50;
+Z0 = 120*pi;
 g_lp = g_lpnor/(Z0*w0);
 
 printgk(g_lp*1e12, file, 'Capacitors', 'C', 'pF');
+
+% All the lengths are corrected to the optimum values obtained with ADS
 
 %% Look for the patch lengths
 load cvsl.mat
@@ -36,5 +39,15 @@ Ldes = interp1(Copts, lengths, g_lp, 'spline');
 
 % Prints and plots the length
 plotcvsl(N, Copts*1e12, lengths, g_lp*1e12, Ldes, path, 'lengths');
-printgk(Ldes, file, 'Patch Lengths', 'L', 'mm');
+printgk(Ldes, file, 'Patch Lengths without considering the dielectric', 'L', 'mm');
+
+%% Patch lengths with dielectric
+e = 3.8;
+Ldiel = Ldes/sqrt(e);
+printgk(Ldiel, file, 'Patch Lengths considering the dielectric', 'L', 'mm');
+
+%% Patch lengths with ratio
+e = 3.8;
+Lnor = Ldiel/max(Ldiel);
+printgk(Lnor, file, 'Patch Lengths as a ratio', 'L', 'mm');
 fclose(file);
