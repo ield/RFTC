@@ -1,129 +1,120 @@
+clear;
+close all;
+
 N = 10;
+a = ones(1, N)/N;     % Feeding of each element
+
 path = '../../Task8_ArrayFactor/Images/';
 
 % Plot a general overview of the array factor function
 set(0, 'DefaultAxesFontName', 'Times New Roman');
 figure('Color',[1 1 1]);
-fplot(@(x) abs(sin(N/2*x)/sin(x/2)), [-3*pi 3*pi], 'k');
 
-ylabel('AF');
-yticks([0 N])
-yticklabels({'0','N'})
+psi = linspace(-3*pi, 3*pi, 10000);
+
+AF = zeros(size(psi));
+
+for ii = 1:length(AF)
+    for jj = 1:N
+        AF(ii) = AF(ii) + a(jj)*exp(1j*jj*psi(ii));
+    end
+end
+
+plot(psi, abs(AF).^2, 'k');
+
+ylabel('|AF|^2');
 
 xlabel('\psi');
 xticks([-2*pi 0 2*pi])
 xticklabels({'-2\pi','0','2\pi'})
 
-saveas(gca, [path, 'af'],'epsc');
+% saveas(gca, [path, 'af'],'epsc');
 
-%% Plot the array factor function with different limits
-limits = [0.5 1 2];     % The \psi limits (maximum and minimum) for a given separation
-separation = {'Np_{\lambda/4}'; 'Np_{\lambda/2}'; 'Np_{\lambda}'};
-xmin =  {'-\pi/2'; '-\pi'; '-2\pi'};
-xmax =  {'\pi/2'; '\pi'; '2\pi'};
-name = {'lambda_4', 'lambda_2', 'lambda'};
-nPlots = 3;             % Number of plots to compare
-
-for ii = 1:nPlots
-    
-%     subplot(1, nPlots, ii)
-    figure('Color',[1 1 1]);
-%     set(gcf,'units','normalized','outerposition',[0 0 0.33 1])
-
-    fplot(@(x) abs(sin(N/2*x)/sin(x/2)), limits(ii)*[-pi pi], 'k');
-
-    ylabel('AF');
-    yticks([0 N])
-    yticklabels({'0',separation{ii}})
-
-    xlabel('\psi');
-    xticks(limits(ii)*[-pi 0 pi])
-    xticklabels({xmin{ii},'0',xmax{ii}})
-
-    % Insert the \theta axis
-    ax1 = gca;
-    ax1_pos = ax1.Position; 
-    ax2 = axes('Position',ax1_pos,...
-        'XAxisLocation','top',...
-        'YAxisLocation','right',...
-        'Color','none');
-    x2 = linspace(0, pi, 100);
-    y2 = zeros(size(x2));
-    line(x2,y2,'Parent',ax2,'Color','k')
-
-    yticks([])
-    ylim([2 2.5]);
-
-    xlabel('\theta');
-    xticks([0 pi/2 pi])
-    xticklabels({'0','\pi/2', '\pi',})
-    xlim([0 pi]);
-    
-    filename = strcat('af_d_', name{ii});
-    saveas(gca, [path, filename],'epsc');
-
-end
-
+%% Different distributions with alpha = 1
+% It is used eq 5.18 of Cardama's book, knowing that kd = 2pim
+clear;
 close all;
-%% Attempt to solve the integral
+
+path = '../../Task8_ArrayFactor/Images/';
+
+% Plot a general overview of the array factor function
+set(0, 'DefaultAxesFontName', 'Times New Roman');
+figure('Color',[1 1 1]);
+
 N = 10;
-m = linspace(0.01, 3, 500);
+m = linspace(0, 3, 1000);
+alpha = 0;              % Phase progressive
 
-psi_min = -2*pi*m;
-psi_max = 2*pi*m;
+% Uniform distribution
+a = ones(1, N)/N;       % Feeding of each element
+D_uniform = max_Dir_separation(m, a, alpha);
 
-psi_res = 180;      % Number of samples in psi
-AF = zeros(length(m), psi_res); % All array factor samples will be here
-allIntegralResults = zeros(size(m));
+plot(m, D_uniform); hold on;
 
-for ii = 1:length(m)
-    psi = linspace(psi_min(ii), psi_max(ii), psi_res);    %180 psi samples of af function
-    af = abs(sin(N/2*psi)./sin(psi/2));
-    AF(ii,:) = af;
-    allIntegralResults(ii) = sum(af)/psi_res;
+% Triangular distribution
+a = zeros(1, N);
+for ii = 0:N-1
+    a(ii+1) = 1-abs((-(N-1)/2+ii)./(N/2));
 end
+a = a/sum(a);
+D_triangular = max_Dir_separation(m, a, alpha);
 
-d_05_pos = find(m>=0.5, 1);
-p = allIntegralResults(d_05_pos)./allIntegralResults;
+plot(m, D_triangular); hold on;
 
-figure('Color',[1 1 1]);
-plot(m, p, 'k');
-ylabel('p');
-xlabel('m');
-
-
-% saveas(gca, [path, 'p_m'],'epsc');
-
-figure('Color',[1 1 1]);
-plot(m, N*p, 'k');
-ylabel('Maximum directivity');
-yticks([0 N])
-yticklabels({'0','N'})
-
-xlabel('m');
-
-saveas(gca, [path, 'max_dir'],'epsc');
-
-% Polynomial approximation of the directivity
-orderPol = 30;
-pol = polyfit(m,p,orderPol)
-polApproximation = zeros(size(p));
-
-fprintf('\n');
-for ii = 1:orderPol+1
-    power = orderPol - ii+1;
-    fprintf('%f m^%i + ', pol(ii), power);  % Prints the polynomial
-    polApproximation = polApproximation + pol(ii)*m.^power;
+% Cosine distribution
+a = zeros(1, N);
+H = 0.5;
+for ii = 0:N-1
+    elem = ii-(N-1)/2;
+    a(ii+1) = 1+H*(cos(pi*elem/(N-1)))^2;
 end
+a = a/sum(a);
+D_cosine = max_Dir_separation(m, a, alpha);
+
+plot(m, D_cosine); hold on;
+
+% Binomial distribution
+a = zeros(1, N);
+for ii = 0:N-1
+    a(ii+1) = nchoosek(N-1,ii);
+end
+a = a/sum(a);
+D_binomial = max_Dir_separation(m, a, alpha);
+
+plot(m, D_binomial); hold on;
+
+xlabel('m = d/\lambda');
+ylabel('D');
+legend('Uniform', 'Triangular', 'Cosine H = 0.5', 'Binomial');
+
+% saveas(gca, [path, 'distributions_alpha0'],'epsc');
+
+%% Uniform distribution with different alpha
+% Progressive phase uniform distribution
+clear;
+close all;
+
+path = '../../Task8_ArrayFactor/Images/';
+
+% Plot a general overview of the array factor function
+set(0, 'DefaultAxesFontName', 'Times New Roman');
 figure('Color',[1 1 1]);
-plot(m, N*p, 'b'); hold on;
-plot(m, N*polApproximation, 'r--');
 
-ylabel('p');
-xlabel('m');
-yticks([0 N])
-yticklabels({'0','N'})
+alpha = 0:15:90;
+txt = cell(length(alpha),1);        % Legend of the graph
 
-legend('Maximum Directivity', 'Polynomial approximation', 'Location', 'Best');
+N = 10;
+a = ones(1, N)/N;       % Feeding of each element
+m = linspace(0, 1.5, 1000);
 
-saveas(gca, [path, 'pol_approx'],'epsc');
+for ii = 1:length(alpha)
+    D_phase = max_Dir_separation(m, a, alpha(ii)*pi/180);
+    plot(m, D_phase); hold on;
+    txt{ii}= sprintf('%i º',alpha(ii));
+end
+legend(txt);
+xlabel('m = d/\lambda');
+ylabel('D');
+
+saveas(gca, [path, 'distributions_progrssive_phase'],'epsc');
+
